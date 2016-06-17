@@ -1,0 +1,33 @@
+{
+  "name": "bamboogrove",
+  "version": "1.0.0",
+  "description": "A bamboo grove management service for school's students.",
+  "private": true,
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ahnlee/BambooGrove.git"
+  },
+  "author": "ahnjaewook <ajw4586@naver.com>",
+  "contributors": [
+    "donginl <me@leedi.me>"
+  ],
+  "bugs": {
+    "url": "https://github.com/ahnlee/BambooGrove/issues"
+  },
+  "license": "GPL-3.0",
+  "dependencies": {
+    "async": "^1.5.2",
+    "aws-sdk": "^2.3.13",
+    "body-parser": "^1.15.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.4",
+    "mongoose-auto-increment": "^5.0.1",
+    "morgan": "^1.7.0",
+    "serve-favicon": "^2.3.0"
+  }
+}
