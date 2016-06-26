@@ -1,6 +1,6 @@
 // NOTE: 환경변수를 설정하고 테스트바람.
 /*
-    PORT        실행될 포트번호. 기본 4586번
+    PORT        실행될 포트번호. 기본 5500번
     MONGO_URI   DB연결 URI. 없이 실행시키면 연결 오류.
     BAMBOO_MODE 서버 실행 모드.
                 ALONE / NORMAL 두개가 있고, ALONE에서는 DB연결을 하지 않는다.
@@ -28,6 +28,11 @@ server.set('view engine', 'ejs');
 server.set('PORT', process.env.PORT || 4586);
 server.set('views', __dirname + '/views');
 
+//  set routes
+server.use('/', require('./routes/index'));
+server.use('/post', require('./routes/post'));
+server.use('/page', require('./routes/page'));
+
 //  start server with environment value 'BAMBOO_MODE'.
 start(process.env.BAMBOO_MODE);
 
@@ -38,8 +43,7 @@ function start(mode) {
             console.log('BambooGrove server has been started without db connection at port ' + server.get('PORT'));
         });
     } else {
-        const MONGO_URI = process.env.MONGO_URI;
-        mongoose.connect(MONGO_URI);
+        mongoose.connect(process.env.MONGO_URI);
         let connection = mongoose.connection;
         //  DB connect error handle
         connection.on('errror', (err) => {
