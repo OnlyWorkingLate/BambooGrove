@@ -5,7 +5,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "set PORT=5500& set MONGO_URI=mongodb://localhost:4586/bamboo_grove& set BAMBOO_MODE=NORMAL& node ./app"
+    "start": "set PORT=5500& set MONGO_URI=mongodb://localhost:4586/bamboo_grove& set NODE_ENV=production& node ./app"
   },
   "repository": {
     "type": "git",
