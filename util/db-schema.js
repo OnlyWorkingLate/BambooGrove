@@ -9,7 +9,7 @@ const groveSchema = new Schema({
         long: String,
         fb_grove_url: String
     },
-    admin: [{  type: Schema.Types.ObjectId  ref: 'Member'}],
+    admin: [{  type: Schema.Types.ObjectId,  ref: 'Member'}],
     image: {
         profile: String,
         thumb: String,
@@ -43,9 +43,9 @@ const memberSchema = new Schema({
     access: {
         access_token: String,
         register_date: Date,
-        last_login: Date,
+        last_login: Date
     }
-})
+});
 
 module.exports.Forest = mongoose.model('Grove', groveSchema);
 module.exports.Post = mongoose.model('Post', postSchema);
