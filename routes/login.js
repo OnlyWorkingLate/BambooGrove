@@ -1,17 +1,23 @@
 'use strict';
+const APP_ACCESS_TOKEN = '563998243780326|c_i4HwSwQvzLVwxf85d7uR_Vh4c';
+const KAKAO_GET_USER_TOKEN = 'kauth.kakao.com/oauth/token';
+const KAKAO_REST_API_KEY = '159dc87a911c2a93bb81a783fb1d3790';
+const KAKAO_REDIRECT_URL = 'http://52.79.95.175/login';
+const KAKAO_REQUEST_USER_INFO = 'https://kapi.kakao.com/v1/user/me';
+const KAKAO_API_ADMIN_KEY = '8d2b8f24c0e10bb4b11f983a2c6f6e4b';
+const INSPECT_KAKAO_ACCESS_TOKEN_URL = 'https://kapi.kakao.com/v1/user/access_token_info';
+
 const express = require('express');
 const router = express.Router();
 
 router.route('/login/:type')
     .post((req, res) => {
         let login_type = req.params.type;
+        let access_token = req.body.access_token,
+            user_id = req.body.user_id;
         if(login_type === 'facebook') {
-            // TODO: DO KAKAO LOGIN
-        } else if(login_type === 'kakao') {
 
-        }
-        function loginKakao(req, res) {
-            let access_token = req.body.access_token;
+        } else if(login_type === 'kakao') {
             inspectKakaoAccessToken(access_token, function(data) {
                 if(!data) {
                     return;
@@ -212,13 +218,13 @@ function createFBAccount(req, res) {
     //  profile image url will solve LARGE SIZE picture.
     let GRAPH_PROFILE = 'https://graph.facebook.com/' + user_id
                         + '?access_token=' + access_token
-                        + '&fields=picture.type(large),name,id,gender,birthday';
+                        + '&fields=picture.type(large),name,id'
     request.get(GRAPH_PROFILE, (err, response, body) => {
-        if(err)
-            reportError(req, err,
-                'An FB Graph API error occured while getting user data in creating user account process.', res);
+        // if(err)
+        //     reportError(req, err,
+        //         'An FB Graph API error occured while getting user data in creating user account process.', res);
         if(response.statusCode != 200) {
-            loginError(req, res, 'user_id or access_token is invalid. Check parameters.');
+            responser.error(res, 'user_id or access_token is invalid. Check parameters.');
         }
         //  create member object
         //  save is complete, re-call loginFB() to perform login.
@@ -235,9 +241,11 @@ function createFBAccount(req, res) {
             }
         });
         user.save((err) => {
-            if(err)
-                reportError(res, err, 'An account error while saving created user data.');
-            loginFB(req, res);
+            if(err) {
+                responser.error(res, 'An error occured.', 500);
+            } else {
+                loginFB(req, res);
+            }
         })
     });
 }

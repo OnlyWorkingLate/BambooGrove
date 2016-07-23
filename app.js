@@ -2,7 +2,7 @@
 // NOTE: 환경변수를 설정하고 테스트바람.
 /*
  BAMBOO_PORT        실행될 포트번호.
- NODE_ENV 서버 실행 모드.
+ BAMBOO_MODE 서버 실행 모드.
  development / production / maintance 세 가지가 있고, development에서는 DB연결을 하지 않는다.
  DB_USER mySQL db user
  DB_PASSWORD mySQL db password
@@ -10,11 +10,13 @@
 const express = require('express'),
     mongoose = require('mongoose'),
     mysql = require('mysql'),
+    sequelize = require('sequelize'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
     favicon = require('serve-favicon'),
     ejs = require('ejs');
 
+//  db connection information from environment variable
 let db_connection = mysql.createConnection({
   host: 'jaewook.me',
   user: process.env.DB_USER,
@@ -25,7 +27,7 @@ let db_connection = mysql.createConnection({
 let app = express();
 
 //  For environment value check
-console.log('NODE_ENV is ' + app.get('env'));
+console.log('NODE_ENV is ' + process.env.BAMBOO_MODE || 'normal');
 console.log('PORT is ' + process.env.BAMBOO_PORT);
 console.log('DB_USER is ' + process.env.DB_USER);
 
@@ -44,16 +46,13 @@ app.use('/post', require('./routes/post'));
 app.use('/page', require('./routes/page'));
 
 //  start server with environment value 'NODE_ENV'.
-switch(app.get('env')) {
+switch(process.env.BAMBOO_MODE) {
     case 'development':
         app.listen(app.get('port'), () => {
             console.log('BambooGrove server has been started without db connection at port ' + app.get('port'));
         });
         break;
-    case 'maintance':
-        break;
-    case 'production':
-    default:
+    case 'normal':
         db_connection.connect((err) => {
             if(err) {
                 console.error('error connecting to db.\n' + err.stack);
