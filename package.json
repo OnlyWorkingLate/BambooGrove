@@ -5,7 +5,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "set PORT=5500& set MONGO_URI=mongodb://localhost:4586/bamboo_grove& set NODE_ENV=production& node ./app"
+    "start": "set BAMBOO_PORT=5500&& set NODE_ENV=production& set DB_USER=root& set DB_PASSWORD=dkswodnr1213& node ./app"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.7.0",
     "mysql": "github:mysqljs/mysql",
+    "request": "^2.74.0",
     "serve-favicon": "^2.3.0"
   }
 }

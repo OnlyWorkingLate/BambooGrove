@@ -35,7 +35,7 @@ app.use(morgan('dev'));
 app.set('port', process.env.BAMBOO_PORT);
 
 app.set('view engine', 'ejs');
-app.set('PORT', app.get('port') || 8081);
+app.set('PORT', process.env.BAMBOO_PORT || 8081);
 app.set('views', __dirname + '/views');
 
 //  set routes
