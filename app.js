@@ -16,13 +16,16 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     ejs = require('ejs');
 
-//  db connection information from environment variable
-let db_connection = mysql.createConnection({
-  host: 'jaewook.me',
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: 'bamboo'
-});
+let db_connection_info = {
+    dialect: 'mysql'
+};
+if(process.env.BAMBOO_MODE === 'server') {
+    db_connection_info.host = 'localhost';
+} else {
+    db_connection_info.host = 'jaewook.me';
+}
+
+const db_connection = new sequelize('bamboo', process.env.DB_USER, process.env.DB_PASSWORD, db_connection_info);
 
 let app = express();
 
@@ -45,6 +48,10 @@ app.use('/', require('./routes/index'));
 app.use('/post', require('./routes/post'));
 app.use('/page', require('./routes/page'));
 
+app.get('/check', (req, res) => {
+    res,send('Server is running!!!');
+});
+
 //  start server with environment value 'NODE_ENV'.
 switch(process.env.BAMBOO_MODE) {
     case 'development':
@@ -52,15 +59,16 @@ switch(process.env.BAMBOO_MODE) {
             console.log('BambooGrove server has been started without db connection at port ' + app.get('port'));
         });
         break;
+    case 'server':
     case 'normal':
-        db_connection.connect((err) => {
-            if(err) {
-                console.error('error connecting to db.\n' + err.stack);
+        db_connection.authenticate()
+            .then((err) => {
+                app.listen(app.get('port'), (err) => {
+                    console.log('Server was started at port at ' + app.get('port'));
+                });
+            })
+            .catch((err) => {
+                console.log('Error while authenticating to db.');
                 return;
-            }
-            app.listen(app.get('port'), (err) => {
-                console.log('Server was started at port at ' + app.get('port'));
             });
-        });
-        break;
 }

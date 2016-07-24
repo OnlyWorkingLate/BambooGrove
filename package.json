@@ -5,7 +5,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "set BAMBOO_PORT=5500&& set NODE_ENV=production& set DB_USER=root& set DB_PASSWORD=dkswodnr1213& node ./app"
+    "start": "set BAMBOO_MODE=normal&set BAMBOO_PORT=5500&& set NODE_ENV=production& set DB_USER=root& set DB_PASSWORD=dkswodnr1213& node ./app"
   },
   "repository": {
     "type": "git",
