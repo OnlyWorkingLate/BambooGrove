@@ -23,6 +23,9 @@ const postSchema = new Schema({
     article: String,
     upload_time: {  type: Date, default: Date.now  },
     last_change_time: {  type: Date, default: Date.now  },
+    // NOTE: status can have a several statement.
+    //  waiting: not uploaded state. Can delete from reporter
+    status: {  type: String, default: 'waiting'  },
     reporter: {
         ip: String,
         passcode: String
