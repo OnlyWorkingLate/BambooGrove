@@ -12,6 +12,7 @@ const express = require('express'),
     morgan = require('morgan'),
     favicon = require('serve-favicon'),
     ejs = require('ejs');
+const eventMgr = require('./util/eventmgr');
 
 let app = express();
 
@@ -44,18 +45,19 @@ switch(app.get('env')) {
         break;
     case 'production':
     default:
-        mongoose.connect(process.env.MONGO_URI);
-        let connection = mongoose.connection;
-        //  DB connect error handle
-        connection.on('errror', (err) => {
-            console.log('Error connecting DB. + Err: ' + err);
-            return;
-        });
-        //  run server
-        connection.on('open', () => {
+        //  db connect
+        eventMgr.db_connect();
+
+        eventMgr.db_open(() => {
             app.listen(app.get('PORT'), () => {
                 console.log('BambooGrove server has been started at port ' + app.get('PORT'));
             });
+        });
+        eventMgr.db_error(() => {
+            console.log('Failed to connect db. Attempt to connect db again..');
+            setTimeout(() => {
+                eventMgr.db_connect();
+            }, 3000);
         });
         break;
 }

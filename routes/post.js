@@ -15,10 +15,10 @@ router.route('/')
 
     })
 
-router.get('/:id', (req, res) => {
+router.get('/:grove/post/:id', (req, res) => {
     let access_token = req.body.access_token;
     Post.findOne({ _id:  })
-        .exec((err, post) = > {
+        .exec((err, post) => {
             if(!err && post ){
                 responser.success(res, post);
             } else {

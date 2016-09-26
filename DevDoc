@@ -1,0 +1,26 @@
+API 주소 체계
+
+GET /
+BambooGrove 홈페이지
+
+GET POST /:grove
+대나무숲 페이지 보기 / 등록(페이지별 고유명사 url 또는 관리자 승인하에 임의의 url 지정)
+
+GET POST /:grove/posts
+전체 글 보기 / 등록(등록은 /:grove/requests/:id 로부터 한다.)
+
+GET DELETE PUT /:grove/posts/:id
+특정 id의 글 보기 / 삭제 / 수정
+
+GET POST DELETE /:grove/requests
+대나무숲에 제보된 글 보기 / 제보하기 / 삭제하기
+제보하기는 기본적으로 글이며, 사진 제보는 글(선택사항)과 같이 받아 아마존 S3에 저장한다.
+
+POST /share/:grove/:post_id
+페이스북에 대나무숲 글 올리기
+굳이 /:grove/posts 와 분리한 이유는,
+자체 홈페이지와 페이스북과의 컨텐츠를 분리하기 위해 쉐어하는 개념
+
+POST /login/facebook
+페이스북으로 로그인. OAuth 쓸 생각, callback url은 하위 url이 될듯
+https://developers.facebook.com/docs/pages/publishing 참고.
